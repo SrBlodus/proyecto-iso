@@ -3,15 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { PaginaPrincipalRoutingModule } from './pagina-principal-routing-module';
 import { Home } from './home/home';
-import { Inputbox } from './inputbox/inputbox';
-import { Outputview } from './outputview/outputview';
+import { ChatInterface } from './chat-interface/chat-interface';
 
 
 @NgModule({
   declarations: [
     Home,
-    Inputbox,
-    Outputview
+    ChatInterface
   ],
   imports: [
     CommonModule,
