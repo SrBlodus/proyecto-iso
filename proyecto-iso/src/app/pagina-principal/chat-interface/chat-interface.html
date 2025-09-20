@@ -1,1 +1,62 @@
-<p>chat-interface works!</p>
+<!-- MENÚ DESPLEGABLE -->
+<div class="menu-container">
+  <div class="menu-toggle" (click)="toggleMenu()">
+    <span class="engranaje">⚙️</span>
+  </div>
+  
+  <div class="menu-dropdown" [class.menu-open]="menuAbierto()">
+    <a href="/admin" class="menu-item">
+      <span class="menu-icon">🛠️</span>
+      Panel Administrativo
+    </a>
+    <a href="/configuracion" class="menu-item">
+      <span class="menu-icon">⚙️</span>
+      Configuración
+    </a>
+    <div class="menu-item" (click)="limpiarChat()">
+      <span class="menu-icon">🗑️</span>
+      Limpiar Chat
+    </div>
+  </div>
+</div>
+
+<!-- PANTALLA DE BIENVENIDA -->
+<div *ngIf="mostrarBienvenida()" class="pantalla-bienvenida">
+  <div class="logo-container">
+    <h1>Verificador Proyecto ISO</h1>
+    <p>¡Hola! ¿En qué puedo ayudarte hoy?</p>
+  </div>
+  
+  <div class="input-container">
+    <input 
+      type="text" 
+      [(ngModel)]="textoUsuario"
+      placeholder="Escribe tu mensaje aquí..."
+      class="input-bienvenida"
+      (keyup.enter)="enviarMensaje()"
+    >
+    <button (click)="enviarMensaje()" class="btn-enviar">
+      Enviar
+    </button>
+  </div>
+</div>
+
+<!-- VISTA DE CHAT -->
+<div *ngIf="!mostrarBienvenida()" class="vista-chat">
+  <div class="historial-mensajes">
+    <div *ngFor="let mensaje of mensajes()" class="mensaje">
+      <strong>{{ mensaje.tipo === 'usuario' ? 'Tú' : 'Asistente' }}:</strong>
+      <p>{{ mensaje.texto }}</p>
+    </div>
+  </div>
+  
+  <div class="input-chat">
+    <input 
+      type="text" 
+      [(ngModel)]="textoUsuario"
+      placeholder="Continúa la conversación..."
+      (keyup.enter)="enviarMensaje()"
+    >
+    <button (click)="enviarMensaje()">Enviar</button>
+  </div>
+</div>

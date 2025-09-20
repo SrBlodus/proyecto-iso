@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, /* → "Si vas a la raíz, ve a /home" */
+  { path: '', redirectTo: '/chat', pathMatch: 'full' }, /* → "Si vas a la raíz, ve a /home" */
     { 
     path: '', 
     loadChildren: () => import('./pagina-principal/pagina-principal-module').then(m => m.PaginaPrincipalModule)
