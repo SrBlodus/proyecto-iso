@@ -44,7 +44,7 @@
 <!-- VISTA DE CHAT -->
 <div *ngIf="!mostrarBienvenida()" class="vista-chat">
   <div class="historial-mensajes">
-    <div *ngFor="let mensaje of mensajes()" class="mensaje">
+    <div *ngFor="let mensaje of mensajes()" class="mensaje" [class]="mensaje.tipo">
       <strong>{{ mensaje.tipo === 'usuario' ? 'Tú' : 'Asistente' }}:</strong>
       <p>{{ mensaje.texto }}</p>
     </div>

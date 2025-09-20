@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { ChatApiService } from '../services/chat-api';
 
 @Component({
   selector: 'app-chat-interface',
@@ -19,6 +20,9 @@ export class ChatInterface {
   // Historial de mensajes del chat
   mensajes = signal<any[]>([]);
 
+  // Inyectar el servicio de API
+  constructor(private chatApiService: ChatApiService) {}
+
   // Función para abrir/cerrar menú
   toggleMenu() {
     this.menuAbierto.update(estado => !estado);
@@ -28,10 +32,10 @@ export class ChatInterface {
   limpiarChat() {
     this.mensajes.set([]);
     this.mostrarBienvenida.set(true);
-    this.menuAbierto.set(false); // Cerrar menú después de limpiar
+    this.menuAbierto.set(false);
   }
 
-  // Función para enviar mensaje
+  // Función para enviar mensaje 
   enviarMensaje() {
     const texto = this.textoUsuario();
     if (texto.trim()) {
@@ -48,19 +52,31 @@ export class ChatInterface {
       // Limpiar input
       this.textoUsuario.set('');
       
-      // Simular respuesta del backend
-      this.simularRespuestaBackend();
+      // ENVIAR AL BACKEND REAL
+      this.enviarAlBackend(texto);
     }
   }
 
-  // Simular respuesta del backend
-  private simularRespuestaBackend() {
-    setTimeout(() => {
-      this.mensajes.update(msgs => [...msgs, {
-        tipo: 'sistema',
-        texto: '¡Hola! Recibí tu mensaje. Por ahora es una respuesta simulada.',
-        timestamp: new Date()
-      }]);
-    }, 1000);
+  // Nueva función para enviar al backend real
+  private enviarAlBackend(url: string) {
+    this.chatApiService.enviarUrl(url).subscribe({
+      next: (respuesta) => {
+        // Éxito: agregar respuesta del backend
+        this.mensajes.update(msgs => [...msgs, {
+          tipo: 'sistema',
+          texto: 'Respuesta del backend: ' + JSON.stringify(respuesta),
+          timestamp: new Date()
+        }]);
+      },
+      error: (error) => {
+        // Error: mostrar que no se pudo conectar
+        this.mensajes.update(msgs => [...msgs, {
+          tipo: 'sistema',
+          texto: 'Error: No se pudo conectar al backend',
+          timestamp: new Date()
+        }]);
+        console.error('Error al enviar URL:', error);
+      }
+    });
   }
 }
